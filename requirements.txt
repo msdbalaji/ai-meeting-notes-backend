@@ -1,10 +1,44 @@
-fastapi
-uvicorn
-sqlalchemy
-psycopg2-binary
-python-dotenv
-authlib
-python-jose
-passlib
-itsdangerous
-httpx
+# -------------------------
+# Core Web Framework
+# -------------------------
+fastapi==0.95.2
+uvicorn==0.22.0
+starlette==0.27.0
+
+# -------------------------
+# Security & Auth
+# -------------------------
+authlib==1.3.0
+python-jose==3.3.0
+passlib==1.7.4
+bcrypt==5.0.0
+itsdangerous==2.1.2
+
+# -------------------------
+# HTTP / OAuth helpers
+# -------------------------
+httpx==0.28.1
+requests==2.31.0
+
+# -------------------------
+# Database
+# -------------------------
+sqlalchemy==1.4.52
+psycopg2-binary==2.9.11
+
+# -------------------------
+# Environment & Utilities
+# -------------------------
+python-dotenv==1.0.0
+python-multipart==0.0.6
+email-validator==2.3.0
+
+# -------------------------
+# PDF Generation (FIXES YOUR CRASH)
+# -------------------------
+reportlab==4.1.0
+
+# -------------------------
+# CORS / Sessions
+# -------------------------
+typing-extensions>=4.2.0
