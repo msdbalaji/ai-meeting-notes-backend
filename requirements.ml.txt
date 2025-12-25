@@ -1,0 +1,8 @@
+faster-whisper
+torch
+transformers
+spacy
+en-core-web-sm
+sentencepiece
+onnxruntime
+

@@ -3,17 +3,21 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 import os
+from app.ml_guard import DISABLE_ML
 
 from app.routers.core import router as core_router
 from app.auth.google import router as google_router
 from app import database
-from app import asr, summarizer, actions
-from app.nlp import tasks as tasks_module
+
+DISABLE_ML = os.getenv("DISABLE_ML", "false").lower() == "true"
+
+# Import ML modules ONLY if enabled
+
 
 app = FastAPI(title="AI Meeting Notes")
 
 # ---------------------------
-# Routers (REGISTER ONCE)
+# Routers
 # ---------------------------
 app.include_router(core_router, prefix="/api")
 app.include_router(google_router, prefix="/api/auth", tags=["auth"])
@@ -41,7 +45,7 @@ app.add_middleware(
 )
 
 # ---------------------------
-# Startup (SINGLE SOURCE)
+# Startup
 # ---------------------------
 @app.on_event("startup")
 def startup():
@@ -49,37 +53,25 @@ def startup():
     database.Base.metadata.create_all(bind=database.engine)
     print("[startup] database tables ensured")
 
-    # ASR
-    try:
-        asr.init_model()
-        print("[startup] ASR initialized")
-    except Exception as e:
-        print("[startup] ASR init failed:", e)
+    if DISABLE_ML:
+        print("[startup] ML DISABLED — backend running in API-only mode")
+        return
 
-    # Summarizer
-    try:
-        summarizer.get_summarizer()
-        print("[startup] summarizer initialized")
-    except Exception as e:
-        print("[startup] summarizer init failed:", e)
+    # 🔥 IMPORT ML ONLY HERE
+    from app import asr, summarizer, actions
+    from app.nlp import tasks as tasks_module
 
-    # NLP Tasks
-    try:
-        tasks_module.init_spacy()
-        print("[startup] spaCy task extractor initialized")
-    except Exception as e:
-        print("[startup] spaCy init failed:", e)
-
-    # NER
-    try:
-        actions.get_ner_pipeline()
-        print("[startup] NER pipeline initialized")
-    except Exception as e:
-        print("[startup] NER init failed:", e)
+    asr.init_model()
+    summarizer.get_summarizer()
+    tasks_module.init_spacy()
+    actions.get_ner_pipeline()
 
 # ---------------------------
 # Root
 # ---------------------------
 @app.get("/", include_in_schema=False)
 def root():
-    return {"message": "API running. Visit /docs"}
+    return {
+        "message": "API running",
+        "ml_enabled": not DISABLE_ML
+    }
