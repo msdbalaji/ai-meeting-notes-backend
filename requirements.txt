@@ -1,3 +1,5 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+
 fastapi==0.95.2
 uvicorn==0.22.0
 starlette==0.27.0
@@ -20,7 +22,9 @@ python-multipart==0.0.6
 
 # ASR
 faster-whisper==1.2.1
-torch>=2.0.0
+torch==2.1.2+cpu
+torchaudio==2.1.2+cpu
+torchvision==0.16.2+cpu
 numpy<2.0
 
 # NLP / summarization
