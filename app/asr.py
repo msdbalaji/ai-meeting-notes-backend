@@ -1,4 +1,6 @@
 # backend/app/asr.py
+from __future__ import annotations
+from faster_whisper import WhisperModel
 import os
 import tempfile
 import asyncio
