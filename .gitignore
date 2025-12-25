@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Virtual environments
+.venv/
+.venv_clean/
+env/
+venv/
+
+# Environment variables
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.sqlite3
+
+# Models / caches
+.cache/
+models/
+whisper/
+spacy/
+hf_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Uploads / temp
+uploads/
+tmp/
